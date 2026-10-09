@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GesCom RDC, assistant de gestion pour petits commerces.">
+  <title>GesCom RDC — Gestion commerciale</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">G</div>
+        <div><strong>GesCom <span>RDC</span></strong><small>Votre assistant commercial</small></div>
+      </div>
+      <div class="shop-chip"><span class="shop-dot"></span><div><strong>Ma boutique</strong><small>Espace de démonstration</small></div></div>
+      <nav class="nav-menu" aria-label="Navigation principale">
+        <button class="nav-link active" data-view="dashboard"><span>▦</span> Tableau de bord</button>
+        <button class="nav-link" data-view="products"><span>▤</span> Produits <b id="navProductCount">0</b></button>
+        <button class="nav-link" data-view="sales"><span>↗</span> Ventes</button>
+        <button class="nav-link" data-view="expenses"><span>↘</span> Dépenses</button>
+        <button class="nav-link" data-view="debts"><span>◷</span> Dettes clients</button>
+        <button class="nav-link" data-view="reports"><span>▥</span> Rapports</button>
+        <button class="nav-link premium-nav" data-view="premium"><span>✦</span> Premium <b>PRO</b></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><span class="help-icon">✦</span><strong>Un commerce mieux géré</strong><p>Suivez vos chiffres et prenez de meilleures décisions.</p></div>
+        <button class="nav-link" id="resetDemo"><span>↻</span> Réinitialiser la démo</button>
+        <div class="sidebar-foot">GESCOM RDC · VERSION DÉMO</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Ouvrir le menu">☰</button>
+        <div class="breadcrumb">Espace de gestion <span>/</span> <strong id="pageCrumb">Tableau de bord</strong></div>
+        <div class="top-actions"><span class="today" id="todayLabel"></span><div class="avatar">GC</div></div>
+      </header>
+
+      <section class="page active" id="view-dashboard">
+        <div class="welcome-row"><div><p class="eyebrow">VOTRE ACTIVITÉ EN UN COUP D’ŒIL</p><h1>Bonjour, commerçant 👋</h1><p class="muted">Voici le résumé de votre commerce.</p></div><button class="btn btn-primary" data-open="saleModal">＋ Enregistrer une vente</button></div>
+        <div class="demo-notice"><span>ⓘ</span><p><strong>Mode démonstration :</strong> les données sont enregistrées dans ce navigateur uniquement. Utilisez des données fictives pour votre présentation.</p></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Chiffre d’affaires</span><span class="stat-icon gold">↗</span></div><strong id="statRevenue">0 FC</strong><small>Ventes enregistrées</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Bénéfice estimé</span><span class="stat-icon green">◆</span></div><strong id="statProfit">0 FC</strong><small>Avant frais non enregistrés</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Produits en stock</span><span class="stat-icon purple">▤</span></div><strong id="statStock">0</strong><small>Unités disponibles</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Dettes restantes</span><span class="stat-icon red">◷</span></div><strong id="statDebts">0 FC</strong><small>Montants non remboursés</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel"><div class="panel-heading"><div><h2>Activité récente</h2><p>Les dernières opérations du commerce</p></div><button class="text-button" data-view="sales">Voir les ventes →</button></div><div class="table-wrap"><table><thead><tr><th>Opération</th><th>Date</th><th>Montant</th><th>Type</th></tr></thead><tbody id="recentActivity"></tbody></table></div><div class="empty-state" id="recentEmpty">Aucune opération pour le moment. Enregistrez votre première vente.</div></article>
+          <article class="panel insights-panel"><div class="panel-heading"><div><h2>Santé du commerce</h2><p>Conseils basés sur vos données</p></div><span class="sparkle">✦</span></div><div id="insights" class="insights-list"></div></article>
+        </div>
+        <article class="panel quick-panel"><div class="panel-heading"><div><h2>Actions rapides</h2><p>Gagnez du temps au quotidien</p></div></div><div class="quick-actions"><button class="quick-action" data-open="productModal"><span class="quick-icon">＋</span><span><strong>Ajouter un produit</strong><small>Mettre à jour votre stock</small></span><span class="arrow">→</span></button><button class="quick-action" data-open="expenseModal"><span class="quick-icon">↘</span><span><strong>Ajouter une dépense</strong><small>Suivre les sorties d’argent</small></span><span class="arrow">→</span></button><button class="quick-action" data-view="debts"><span class="quick-icon">◷</span><span><strong>Consulter les dettes</strong><small>Suivre les paiements à recevoir</small></span><span class="arrow">→</span></button></div></article>
+      </section>
+
+      <section class="page" id="view-products">
+        <div class="page-heading"><div><p class="eyebrow">CATALOGUE</p><h1>Mes produits</h1><p class="muted">Gérez les articles et les quantités disponibles.</p></div><button class="btn btn-primary" data-open="productModal">＋ Ajouter un produit</button></div>
+        <article class="panel"><div class="panel-heading search-heading"><div><h2>Inventaire</h2><p id="productSummary">0 produit enregistré</p></div><input id="productSearch" class="search-input" placeholder="Rechercher un produit…" aria-label="Rechercher un produit"></div><div class="table-wrap"><table><thead><tr><th>Produit</th><th>Prix d’achat</th><th>Prix de vente</th><th>Stock</th><th>Marge/unité</th><th>Actions</th></tr></thead><tbody id="productsTable"></tbody></table></div><div class="empty-state" id="productsEmpty">Aucun produit. Ajoutez votre premier article.</div></article>
+      </section>
+
+      <section class="page" id="view-sales">
+        <div class="page-heading"><div><p class="eyebrow">ENCAISSEMENTS</p><h1>Ventes</h1><p class="muted">Consultez les ventes et enregistrez de nouvelles opérations.</p></div><button class="btn btn-primary" data-open="saleModal">＋ Enregistrer une vente</button></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Historique des ventes</h2><p>Les ventes au comptant et à crédit</p></div></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Produit</th><th>Quantité</th><th>Montant</th><th>Mode</th><th>Client</th></tr></thead><tbody id="salesTable"></tbody></table></div><div class="empty-state" id="salesEmpty">Aucune vente enregistrée.</div></article>
+      </section>
+
+      <section class="page" id="view-expenses">
+        <div class="page-heading"><div><p class="eyebrow">SORTIES D’ARGENT</p><h1>Dépenses</h1><p class="muted">Gardez une trace des frais de votre activité.</p></div><button class="btn btn-primary" data-open="expenseModal">＋ Ajouter une dépense</button></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Journal des dépenses</h2><p id="expenseSummary">0 FC de dépenses enregistrées</p></div></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Motif</th><th>Catégorie</th><th>Montant</th><th>Action</th></tr></thead><tbody id="expensesTable"></tbody></table></div><div class="empty-state" id="expensesEmpty">Aucune dépense enregistrée.</div></article>
+      </section>
+
+      <section class="page" id="view-debts">
+        <div class="page-heading"><div><p class="eyebrow">PAIEMENTS À RECEVOIR</p><h1>Dettes clients</h1><p class="muted">Suivez les ventes à crédit et les remboursements.</p></div><button class="btn btn-primary" data-open="saleModal">＋ Vente à crédit</button></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Suivi des créances</h2><p>Les montants encore dus par les clients</p></div></div><div class="table-wrap"><table><thead><tr><th>Client</th><th>Produit</th><th>Date</th><th>Montant initial</th><th>Reste dû</th><th>Action</th></tr></thead><tbody id="debtsTable"></tbody></table></div><div class="empty-state" id="debtsEmpty">Aucune dette client enregistrée.</div></article>
+      </section>
+
+      <section class="page" id="view-reports">
+        <div class="page-heading"><div><p class="eyebrow">ANALYSE</p><h1>Rapports</h1><p class="muted">Un résumé simple des résultats enregistrés.</p></div><button class="btn btn-outline" id="printReport">⇩ Imprimer / PDF</button></div>
+        <div class="report-grid"><article class="report-card"><span>Recettes totales</span><strong id="reportRevenue">0 FC</strong></article><article class="report-card"><span>Dépenses enregistrées</span><strong id="reportExpenses">0 FC</strong></article><article class="report-card"><span>Coût estimé des produits vendus</span><strong id="reportCost">0 FC</strong></article><article class="report-card"><span>Bénéfice estimé après dépenses</span><strong id="reportNet">0 FC</strong></article></div>
+        <article class="panel report-note"><h2>Comment lire ce rapport ?</h2><p>Le chiffre d’affaires correspond aux ventes enregistrées, y compris les ventes à crédit. Le bénéfice estimé soustrait le coût des produits vendus et les dépenses saisies. Il ne remplace pas une comptabilité complète et reste exact uniquement si les données sont correctement enregistrées.</p><button class="btn btn-outline" id="exportCsv">Exporter les produits (CSV)</button></article>
+      </section>
+
+      <section class="page" id="view-premium">
+        <div class="premium-hero">
+          <div class="premium-hero-copy"><p class="eyebrow">POUR ALLER PLUS LOIN</p><h1>Faites grandir votre commerce. <span>✦</span></h1><p>Découvrez les outils Premium pour mieux comprendre vos ventes et prendre des décisions avec plus de confiance.</p><div class="premium-price"><strong>5 $</strong><span>/ mois <small>Prix proposé, à valider</small></span></div><button class="btn btn-gold" id="premiumSubscribe">Découvrir l’abonnement</button><p class="premium-disclaimer">Prototype scolaire : aucun paiement réel n’est effectué.</p></div>
+          <div class="premium-ornament"><div class="ornament-circle">G<span>+</span></div><div class="ornament-caption">GESCOM RDC <b>PREMIUM</b></div></div>
+        </div>
+        <div class="premium-section-heading"><p class="eyebrow">CHOISISSEZ VOTRE FORMULE</p><h2>Simple pour commencer, puissant pour évoluer.</h2></div>
+        <div class="plan-grid">
+          <article class="plan-card"><div class="plan-label">ESSENTIEL</div><h2>Gratuit</h2><p class="plan-description">Les outils de base pour suivre votre activité.</p><div class="plan-price">0 $ <span>/ toujours</span></div><ul><li>✓ Gestion des produits et du stock</li><li>✓ Enregistrement des ventes</li><li>✓ Suivi des dépenses et des dettes</li><li>✓ Résumé simple de l’activité</li></ul><button class="btn btn-outline plan-button" data-view="dashboard">Continuer gratuitement</button></article>
+          <article class="plan-card plan-card-premium"><div class="popular-label">FORMULE PROPOSÉE</div><div class="plan-label">PREMIUM</div><h2>Plus de visibilité</h2><p class="plan-description">Des outils supplémentaires pour analyser votre commerce.</p><div class="plan-price">5 $ <span>/ mois</span></div><ul><li>✓ Rapports détaillés et statistiques avancées</li><li>✓ Alertes de stock personnalisables</li><li>✓ Historique et analyses améliorés</li><li>✓ Exportation avancée des rapports</li><li>✓ Assistance prioritaire (à mettre en place)</li></ul><button class="btn btn-gold plan-button" id="premiumSubscribe2">Choisir Premium</button></article>
+        </div>
+        <div class="premium-info"><span>ⓘ</span><p><strong>À savoir :</strong> cette version est une démonstration locale. Le bouton Premium affiche une information de démonstration ; il n’active pas un abonnement payant. Pour vendre réellement l’abonnement, il faudra ajouter un serveur, des comptes utilisateurs et un moyen de paiement adapté.</p></div>
+      </section>
+
+      <footer class="main-footer"><span>© 2026 GesCom RDC</span><span>Un commerce mieux organisé commence ici.</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle"><form class="modal" id="productForm"><div class="modal-heading"><div><p class="eyebrow">INVENTAIRE</p><h2 id="productModalTitle">Ajouter un produit</h2></div><button type="button" class="close-modal" data-close="productModal" aria-label="Fermer">×</button></div><input type="hidden" id="productId"><label>Nom du produit<input id="productName" required maxlength="80" placeholder="Ex. Cahier 100 pages"></label><div class="form-row"><label>Prix d’achat (FC)<input id="productBuy" type="number" min="0" step="1" required placeholder="Ex. 2500"></label><label>Prix de vente (FC)<input id="productSell" type="number" min="0" step="1" required placeholder="Ex. 3500"></label></div><label>Quantité en stock<input id="productQty" type="number" min="0" step="1" required placeholder="Ex. 20"></label><div class="modal-actions"><button type="button" class="btn btn-outline" data-close="productModal">Annuler</button><button class="btn btn-primary" type="submit">Enregistrer</button></div></form></div>
+
+  <div class="modal-backdrop" id="saleModal" role="dialog" aria-modal="true" aria-labelledby="saleModalTitle"><form class="modal" id="saleForm"><div class="modal-heading"><div><p class="eyebrow">ENCAISSEMENT</p><h2 id="saleModalTitle">Enregistrer une vente</h2></div><button type="button" class="close-modal" data-close="saleModal" aria-label="Fermer">×</button></div><label>Produit<select id="saleProduct" required><option value="">Choisir un produit</option></select></label><div class="form-row"><label>Quantité<input id="saleQty" type="number" min="1" step="1" required value="1"></label><label>Mode de paiement<select id="salePayment"><option value="cash">Comptant</option><option value="credit">À crédit</option></select></label></div><label>Nom du client (facultatif pour comptant)<input id="saleCustomer" maxlength="80" placeholder="Ex. Client 001"></label><div class="form-hint" id="salePreview">Sélectionnez un produit pour voir le montant.</div><div class="modal-actions"><button type="button" class="btn btn-outline" data-close="saleModal">Annuler</button><button class="btn btn-primary" type="submit">Valider la vente</button></div></form></div>
+
+  <div class="modal-backdrop" id="expenseModal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle"><form class="modal" id="expenseForm"><div class="modal-heading"><div><p class="eyebrow">DÉPENSE</p><h2 id="expenseModalTitle">Ajouter une dépense</h2></div><button type="button" class="close-modal" data-close="expenseModal" aria-label="Fermer">×</button></div><label>Motif<input id="expenseName" required maxlength="100" placeholder="Ex. Transport des marchandises"></label><div class="form-row"><label>Catégorie<select id="expenseCategory"><option>Transport</option><option>Loyer</option><option>Électricité</option><option>Communication</option><option>Autre</option></select></label><label>Montant (FC)<input id="expenseAmount" type="number" min="1" step="1" required placeholder="Ex. 5000"></label></div><div class="modal-actions"><button type="button" class="btn btn-outline" data-close="expenseModal">Annuler</button><button class="btn btn-primary" type="submit">Enregistrer</button></div></form></div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
